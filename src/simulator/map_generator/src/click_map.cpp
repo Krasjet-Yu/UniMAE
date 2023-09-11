@@ -20,8 +20,12 @@ using namespace std;
 struct Point {
     double x;
     double y;
-
     Point(double _x, double _y) : x(_x), y(_y) {}
+};
+
+enum MAP_TYPES {  
+    WALLS = 0,  
+    BOXES = 1  
 };
 
 ros::Publisher all_map_pub_;
@@ -31,6 +35,7 @@ pcl::PointCloud<pcl::PointXYZ> map_cloud_;
 ros::Subscriber click_sub_;
 std::vector<Eigen::Vector3d> points_;
 std::vector<Point> points2_;
+int map_type_;
 double len2_;
 double resolution_;
 
@@ -92,7 +97,7 @@ std::vector<double> convertToRectangle(std::vector<Point>& points) {
     return rectangle;
 }
 
-void clickCallback(const geometry_msgs::PoseStamped& msg) {
+void wallCallback(const geometry_msgs::PoseStamped& msg) {
   double x = msg.pose.position.x;
   double y = msg.pose.position.y;
   points_.push_back(Eigen::Vector3d(x, y, 0));
@@ -131,7 +136,7 @@ void clickCallback(const geometry_msgs::PoseStamped& msg) {
   all_map_pub_.publish(map_msg_);
 }
 
-void clickCallback2(const geometry_msgs::PoseStamped& msg) {
+void BoxCallback(const geometry_msgs::PoseStamped& msg) {
   double x = msg.pose.position.x;
   double y = msg.pose.position.y;
   points2_.push_back(Point(x, y));
@@ -183,13 +188,20 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "click_map");
   ros::NodeHandle nh("~");
 
+  nh.param("map/map_type", map_type_, -1);
   nh.param("map/len2", len2_, 0.15);
   nh.param("map/resolution", resolution_, 0.1);
 
   all_map_pub_ = nh.advertise<sensor_msgs::PointCloud2>("/map_generator/global_cloud", 1);
 
-  click_sub_ = nh.subscribe("/move_base_simple/goal", 10, clickCallback2);
-
+  if (map_type_ == WALLS) {
+    cout << "current map type is walls ... " << endl;
+    click_sub_ = nh.subscribe("/move_base_simple/goal", 10, wallCallback);
+  }
+  else if (map_type_ == BOXES) {
+    cout << "current map type is boxes ... " << endl;
+    click_sub_ = nh.subscribe("/move_base_simple/goal", 10, BoxCallback);
+  }
   ros::Duration(0.5).sleep();
 
   // init random device

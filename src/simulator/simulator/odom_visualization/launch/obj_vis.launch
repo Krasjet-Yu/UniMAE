@@ -1,7 +1,0 @@
-<launch>
-  <node pkg="odom_visualization" type="object_visualization" name="object_visualization" output="screen">
-    <param name="mesh_ply" value="$(find odom_visualization)/meshes/house_1.ply"/>
-  </node>
-
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find map_generator)/rviz_config/template.rviz" required="true" />
-</launch>
