@@ -1,0 +1,4 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find simulator)/rviz/rviz_sim.rviz">
+  </node>
+</launch>

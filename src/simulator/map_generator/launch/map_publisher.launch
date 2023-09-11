@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="map_generator" name="map_pub" type="map_pub" output="screen" args="$(find map_generator)/resource/cjx.pcd">    
+  </node>
+
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find map_generator)/rviz_config/template.rviz" required="true">
+  </node>
+</launch>

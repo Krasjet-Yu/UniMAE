@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="map_generator" name="click_map_node" type="click_map" output="screen"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find map_generator)/rviz_config/template.rviz" required="true" />
+</launch>

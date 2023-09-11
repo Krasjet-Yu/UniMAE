@@ -1,0 +1,87 @@
+<launch>
+  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find mockamap)/rviz/mockamap.rviz" required="true" /> -->
+  <arg name="map_size_x" value="40.0"/>
+  <arg name="map_size_y" value="40.0"/>
+  <arg name="map_size_z" value=" 3.0"/>
+
+  <arg name="sensor" value="laser"/>
+
+  <arg name="odometry_topic" value="visual_slam/odom"/>
+
+  <!-- load pcd file -->
+  <!-- <node pkg="map_generator" name="map_pub" type="map_pub" output="screen" args="$(find map_generator)/resource/cjx.pcd">    
+  </node> -->
+  <node pkg="map_generator" name="map_pub" type="map_pub" output="screen" args="$(find map_generator)/resource/house_1.pcd">    
+  </node>
+  <!-- <include file="$(find mockamap)/launch/mockamap.launch">
+      <param name="seed" type="int" value="127"/>
+      <param name="update_freq" type="double" value="0.5"/>
+
+      <param name="resolution" type="double" value="0.1"/>
+
+      <param name="x_length" value="$(arg map_size_x_)"/>
+      <param name="y_length" value="$(arg map_size_y_)"/>
+      <param name="z_length" value="$(arg map_size_z_)"/>
+
+      <param name="type" type="int" value="2"/>
+  </include> -->
+
+  <group ns="uav0">
+    <arg name="group_name" value="uav"/>
+    <arg name="group_id"   value="0"/>
+    <node pkg="nodelet" type="nodelet" name="manager" args="manager" output="screen">
+      <param name="num_worker_threads" value="16"/>
+    </node>
+
+    <include file="$(find scenario)/launch/uav_simulator.launch">
+      <arg name="sensor" value="$(arg sensor)"/>
+      <arg name="map_size_x_" value="$(arg map_size_x)"/>
+      <arg name="map_size_y_" value="$(arg map_size_y)"/>
+      <arg name="map_size_z_" value="$(arg map_size_z)"/>
+      <arg name="group_name"  value="$(arg group_name)"/>
+      <arg name="group_id"    value="$(arg group_id)"/>
+      <arg name="odometry_topic" value="$(arg odometry_topic)"/>
+    </include>
+
+    <!-- <include file="$(find ego_planner)/launch/planning.launch">
+      <arg name="sensor_type" value="$(arg sensor)"/>
+      <arg name="odom_topic"  value="$(arg odometry_topic)" />
+      <arg name="map_size_x_" value="$(arg map_size_x)"/>
+      <arg name="map_size_y_" value="$(arg map_size_y)"/>
+      <arg name="map_size_z_" value="$(arg map_size_z)"/>
+      <arg name="group_name"  value="$(arg group_name)"/>
+      <arg name="group_id"    value="$(arg group_id)"/>
+    </include> -->
+  </group>
+
+  <group ns="ugv0">
+    <arg name="group_name" value="ugv"/>
+    <arg name="group_id"   value="0"/>
+    <node pkg="nodelet" type="nodelet" name="manager" args="manager" output="screen">
+      <param name="num_worker_threads" value="16"/>
+    </node>
+
+    <include file="$(find scenario)/launch/ugv_simulator.launch">
+      <arg name="sensor" value="$(arg sensor)"/>
+      <arg name="map_size_x_" value="$(arg map_size_x)"/>
+      <arg name="map_size_y_" value="$(arg map_size_y)"/>
+      <arg name="map_size_z_" value="$(arg map_size_z)"/>
+      <arg name="group_name"  value="$(arg group_name)"/>
+      <arg name="group_id"    value="$(arg group_id)"/>
+      <arg name="odometry_topic" value="$(arg odometry_topic)"/>
+    </include>
+
+    <!-- <include file="$(find ego_planner)/launch/planning.launch">
+      <arg name="sensor_type" value="$(arg sensor)"/>
+      <arg name="odom_topic"  value="$(arg odometry_topic)" /> 
+      <arg name="map_size_x_" value="$(arg map_size_x)"/>
+      <arg name="map_size_y_" value="$(arg map_size_y)"/>
+      <arg name="map_size_z_" value="$(arg map_size_z)"/>
+      <arg name="group_name"  value="$(arg group_name)"/>
+      <arg name="group_id"    value="$(arg group_id)"/>
+    </include> -->
+  </group>
+
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find scenario)/rviz/rviz_sim.rviz"/>
+
+</launch>

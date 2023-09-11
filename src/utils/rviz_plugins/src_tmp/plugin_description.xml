@@ -1,0 +1,9 @@
+<library path="lib/librviz_plugins">
+    <class name="rviz_plugins/Goal2DTool"
+           type="rviz_plugins::Goal2DTool"
+           base_class_type="rviz::Tool">
+        <description>
+            Tool for setting object initialize position
+        </description>
+    </class>
+</library>

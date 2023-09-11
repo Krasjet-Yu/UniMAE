@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="map_generator" name="map_recorder" type="map_recorder" output="screen" args="$(find map_generator)/resource/cjx.pcd">
+  </node>
+</launch>
