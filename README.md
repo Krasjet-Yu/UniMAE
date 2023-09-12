@@ -56,8 +56,8 @@ git merge origin master                    # requires manual conflict resolution
 ### Simulator
 ##### Map Generator
 - [x] generate click map;
-- [ ] wapper MapGenerator class for variable buildings
+- [x] wapper MapGenerator class for variable buildings
 - [ ] operator rqt for map generation
 ##### Robot Model Simulator 
 - [ ] uav simulator
-- [ ] ugv simulator
+- [x] ugv simulator
