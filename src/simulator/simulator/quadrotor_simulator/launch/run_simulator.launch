@@ -1,0 +1,35 @@
+<launch>
+    <arg name="drone_id" />
+    <arg name="odom_topic" />
+    <arg name="cmd_topic" />
+    <arg name="traj_topic" />
+    <arg name="mesh_topic" />
+
+    <arg name="init_x"/>
+    <arg name="init_y"/>
+    <arg name="init_z"/>
+    <arg name="init_yaw"/>
+
+    <!-- <rosparam command="load" file="$(find quadrotor_simulator)/params/simulator.yaml" /> -->
+
+    <node pkg="quadrotor_simulator" name="quadrotor_drone_$(arg drone_id)_simulator_node" type="quadrotor_simulator_node" output="screen" >
+      <remap from="~odom" to="$(arg odom_topic)"/>
+      <remap from="~traj" to="$(arg traj_topic)"/>
+      <remap from="~mesh" to="$(arg mesh_topic)"/>
+
+      <param name="drone_id" value="$(arg drone_id)"/>
+
+      <param name="uav_type" value="2"/>
+      <param name="init_x" value="$(arg init_x)"/>
+      <param name="init_y" value="$(arg init_y)"/>
+      <param name="init_z" value="$(arg init_z)"/>
+      <param name="init_yaw" value="$(arg init_yaw)"/>
+      <param name="time_resolution" value="0.01"/>
+      <param name="max_longitude_speed" value="15.0"/>
+      <param name="max_latitude_speed" value="1.5"/>
+      <param name="max_angular_vel" value="24.0"/>
+      <param name="time_delay" value="0.0"/>
+      <param name="noise_std" value="0.0"/>
+  </node>
+  
+</launch>
