@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   pcl_conversions
+  pcl_ros
 )
 find_package(PCL REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -18,7 +19,7 @@ find_package(Eigen3 REQUIRED)
 catkin_package()
 
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
   ${PCL_INCLUDE_DIRS}
@@ -41,5 +42,12 @@ target_link_libraries(map_pub
 
 add_executable (click_map src/click_map.cpp )
 target_link_libraries(click_map
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}) 
+  
+add_executable (mockamap_node 
+  src/mockamap.cpp 
+  src/maps.cpp)
+target_link_libraries(mockamap_node
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}) 

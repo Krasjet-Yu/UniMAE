@@ -1,16 +1,18 @@
 <launch>
-  <arg name="drone_id"   default="0"/>
+  <arg name="drone_id"    default="0"/>
+  <arg name="drone_scale" default="1.0"/>
   <arg name="init_x"   default="0"/>
   <arg name="init_y"   default="0"/>
   <arg name="init_z"   default="5"/>
   <arg name="init_yaw" default="0"/>
 
   <include file="$(find quadrotor_simulator)/launch/run_simulator.launch">
-    <arg name="drone_id" value="$(arg drone_id)" />
-    <arg name="odom_topic" value="/car_$(arg drone_id)/odometry" />
-    <!-- <arg name="cmd_topic" value="/car_$(arg drone_id)/command" /> -->
-    <arg name="traj_topic" value="/car_$(arg drone_id)/trajectory" />
-    <arg name="mesh_topic" value="/car_$(arg drone_id)/mesh" />
+    <arg name="drone_id"    value="$(arg drone_id)" />
+    <arg name="drone_scale" value="$(arg drone_scale)"/>
+    <arg name="odom_topic" value="/drone_$(arg drone_id)/odometry" />
+    <!-- <arg name="cmd_topic" value="/drone_$(arg drone_id)/command" /> -->
+    <arg name="traj_topic" value="/drone_$(arg drone_id)/trajectory" />
+    <arg name="mesh_topic" value="/drone_$(arg drone_id)/mesh" />
 
     <arg name="init_x" value="$(arg init_x)"/>
     <arg name="init_y" value="$(arg init_y)"/>

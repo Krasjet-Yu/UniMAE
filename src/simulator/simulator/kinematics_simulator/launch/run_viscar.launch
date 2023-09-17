@@ -1,11 +1,13 @@
 <launch>
-  <arg name="car_id"   default="0"/>
-  <arg name="init_x"   default="0"/>
-  <arg name="init_y"   default="0"/>
-  <arg name="init_yaw" default="0"/>
+  <arg name="car_id"    default="0"/>
+  <arg name="car_scale" default="1.0"/>
+  <arg name="init_x"    default="0"/>
+  <arg name="init_y"    default="0"/>
+  <arg name="init_yaw"  default="0"/>
 
   <include file="$(find kinematics_simulator)/launch/run_simulator.launch">
-    <arg name="car_id" value="$(arg car_id)" />
+    <arg name="car_id"    value="$(arg car_id)" />
+    <arg name="car_scale" value="$(arg car_scale)"/>
     <arg name="odom_topic" value="/car_$(arg car_id)/odometry" />
     <!-- <arg name="cmd_topic" value="/car_$(arg car_id)/command" /> -->
     <arg name="traj_topic" value="/car_$(arg car_id)/trajectory" />

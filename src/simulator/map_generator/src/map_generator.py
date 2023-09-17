@@ -25,20 +25,20 @@ class map_generator(object):
         
         # rospack = rospkg.RosPack()
         # package_path = rospack.get_path("yolov4_trt_ros")
-        self.dimx = rospy.get_param("map/x_size", default=10.0)
-        self.dimy = rospy.get_param("map/y_size", default=10.0)
-        self.dimz = rospy.get_param("map/z_size", default=3.0)
+        self.dimx = rospy.get_param("~map/x_size", default=10.0)
+        self.dimy = rospy.get_param("~map/y_size", default=10.0)
+        self.dimz = rospy.get_param("~map/z_size", default=3.0)
 
-        self.resolution = rospy.get_param("map/resolution", default=0.05)
+        self.resolution = rospy.get_param("~map/resolution", default=0.05)
 
-        self.add_floor = rospy.get_param("map/add_floor", default=True)
-        self.add_ceiling = rospy.get_param("map/add_ceiling", default=True)
+        self.add_floor = rospy.get_param("~map/add_floor", default=True)
+        self.add_ceiling = rospy.get_param("~map/add_ceiling", default=True)
         
-        self.all_map_topic = rospy.get_param("all_map_topic", default="/map_generator/global_cloud")
+        self.all_map_topic = rospy.get_param("~all_map_topic", default="/map_generator/global_cloud")
         self.all_map_pub = rospy.Publisher(self.all_map_topic, PointCloud2, queue_size=1)
         # self.odom_sub = rospy.Subscriber( "odometry", Odometry, self.odom_callback, queue_size=50);
 
-        self.rate = rospy.get_param("sensing/rate", default=1.0)
+        self.rate = rospy.get_param("~sensing/rate", default=1.0)
         self.rate = rospy.Rate(self.rate)
 
         print("dimx: ", self.dimx)

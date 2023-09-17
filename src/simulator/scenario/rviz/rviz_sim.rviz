@@ -5,9 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /ugv01/mapping1
-        - /uav01/odom_vis1
-        - /Odometry1/Shape1
       Splitter Ratio: 0.46176469326019287
     Tree Height: 949
   - Class: rviz/Selection
@@ -20,7 +17,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: globalmap
+    SyncSource: ""
   - Class: rviz/Tool Properties
     Expanded:
       - /2D Nav Goal1
@@ -90,14 +87,6 @@ Visualization Manager:
       Value: true
     - Class: rviz/Group
       Displays:
-        - Class: rviz/MarkerArray
-          Enabled: false
-          Marker Topic: /uav0/vis
-          Name: uav
-          Namespaces:
-            {}
-          Queue Size: 100
-          Value: false
         - Class: rviz/Group
           Displays:
             - Alpha: 1
@@ -184,7 +173,7 @@ Visualization Manager:
               Use Fixed Frame: true
               Use rainbow: true
               Value: true
-          Enabled: true
+          Enabled: false
           Name: mapping
         - Class: rviz/Group
           Displays:
@@ -379,7 +368,7 @@ Visualization Manager:
               Use Fixed Frame: true
               Use rainbow: false
               Value: false
-          Enabled: true
+          Enabled: false
           Name: planning
         - Class: rviz/Group
           Displays:
@@ -412,21 +401,29 @@ Visualization Manager:
               Marker Topic: /ugv0/odom_visualization/robot
               Name: uav
               Namespaces:
-                mesh: true
+                {}
               Queue Size: 100
               Value: true
-          Enabled: true
+          Enabled: false
           Name: odom_vis
         - Class: rviz/MarkerArray
-          Enabled: true
+          Enabled: false
           Marker Topic: /ugv0/pcl_render_node/laser_range
           Name: laser_range
           Namespaces:
             {}
           Queue Size: 100
+          Value: false
+        - Class: rviz/Marker
+          Enabled: true
+          Marker Topic: /car_0/mesh
+          Name: model
+          Namespaces:
+            "": true
+          Queue Size: 100
           Value: true
       Enabled: true
-      Name: ugv0
+      Name: car0
     - Class: rviz/Group
       Displays:
         - Class: rviz/Group
@@ -522,7 +519,7 @@ Visualization Manager:
               Use Fixed Frame: true
               Use rainbow: true
               Value: false
-          Enabled: true
+          Enabled: false
           Name: locating
         - Class: rviz/Group
           Displays:
@@ -697,7 +694,7 @@ Visualization Manager:
               Topic: /car_state
               Unreliable: false
               Value: false
-          Enabled: true
+          Enabled: false
           Name: detecting
         - Class: rviz/Group
           Displays:
@@ -805,7 +802,7 @@ Visualization Manager:
               Use Fixed Frame: true
               Use rainbow: false
               Value: false
-          Enabled: true
+          Enabled: false
           Name: planning
         - Class: rviz/Group
           Displays:
@@ -893,7 +890,7 @@ Visualization Manager:
               Use Fixed Frame: true
               Use rainbow: true
               Value: true
-          Enabled: true
+          Enabled: false
           Name: debug
         - Class: rviz/Group
           Displays:
@@ -977,7 +974,7 @@ Visualization Manager:
               Use Fixed Frame: true
               Use rainbow: true
               Value: false
-          Enabled: true
+          Enabled: false
           Name: visibility
         - Class: rviz/Group
           Displays:
@@ -1010,29 +1007,21 @@ Visualization Manager:
               Marker Topic: /uav0/odom_visualization/robot
               Name: uav
               Namespaces:
-                mesh: true
+                {}
               Queue Size: 100
               Value: true
-          Enabled: true
+          Enabled: false
           Name: odom_vis
-        - Class: rviz/MarkerArray
-          Enabled: false
-          Marker Topic: /uav0/odom_visualization/fov_visual
-          Name: fov
+        - Class: rviz/Marker
+          Enabled: true
+          Marker Topic: /drone_0/mesh
+          Name: model
           Namespaces:
-            {}
+            "": true
           Queue Size: 100
-          Value: false
-        - Class: rviz/MarkerArray
-          Enabled: false
-          Marker Topic: /uav0/pcl_render_node/laser_range
-          Name: laser_range
-          Namespaces:
-            {}
-          Queue Size: 100
-          Value: false
+          Value: true
       Enabled: true
-      Name: uav0
+      Name: drone0
     - Class: rviz/Group
       Displays:
         - Class: rviz/Marker
@@ -1089,41 +1078,6 @@ Visualization Manager:
       Transport Hint: raw
       Unreliable: false
       Value: false
-    - Angle Tolerance: 0.009999999776482582
-      Class: rviz/Odometry
-      Covariance:
-        Orientation:
-          Alpha: 0.5
-          Color: 255; 255; 127
-          Color Style: Unique
-          Frame: Local
-          Offset: 1
-          Scale: 1
-          Value: true
-        Position:
-          Alpha: 0.30000001192092896
-          Color: 204; 51; 204
-          Scale: 1
-          Value: true
-        Value: true
-      Enabled: true
-      Keep: 1
-      Name: Odometry
-      Position Tolerance: 0.009999999776482582
-      Queue Size: 10
-      Shape:
-        Alpha: 1
-        Axes Length: 0.5
-        Axes Radius: 0.10000000149011612
-        Color: 255; 25; 0
-        Head Length: 0.30000001192092896
-        Head Radius: 0.10000000149011612
-        Shaft Length: 1
-        Shaft Radius: 0.05000000074505806
-        Value: Axes
-      Topic: /target_ekf_odom
-      Unreliable: false
-      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:

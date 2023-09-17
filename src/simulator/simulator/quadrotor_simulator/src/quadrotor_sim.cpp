@@ -8,9 +8,6 @@
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 #include "plan_utils/traj_container.hpp"
-#include "quadrotor_simulator/MincoTraj.h"
-#include "quadrotor_simulator/SingleMinco.h"
-#include "quadrotor_simulator/Trajectory.h"
 
 #define OMINIDIRECTION 0
 #define DIFFERENTIAL   1
@@ -41,8 +38,9 @@ bool rcv_cmd = false;
 bool rcv_traj = false;
 
 // simulator parameters
-int uav_type = DIFFERENTIAL;
+int drone_type = DIFFERENTIAL;
 int drone_id = 0;
+static double drone_scale;
 double init_x = 0.0;
 double init_y = 0.0;
 double init_z = 0.0;
@@ -80,50 +78,9 @@ double guassRandom(double std)
 	return std * distribution(generator);
 }
 
-void rcvTrajCallBack(const quadrotor_simulator::TrajectoryConstPtr traj_msg)
+void rcvTrajCallBack(const nav_msgs::Odometry traj_msg)
 {
     rcv_traj = true;
-
-	plan_utils::MinJerkOpt jerk_opter;
-    // std::vector<plan_utils::LocalTrajData> minco_traj;
-    plan_utils::TrajContainer surround_traj;
-    std::vector<bool> reverse;
-    double total_time = 0.0;
-    for(int i = 0; i < traj_msg->minco_path.trajs.size(); i++)
-    {
-        double start_time = traj_msg->minco_path.trajs.at(i).start_time.toSec();
-        quadrotor_simulator::SingleMinco sm = traj_msg->minco_path.trajs[i];
-        Eigen::MatrixXd posP(2, sm.pos_pts.size() - 2);
-        Eigen::VectorXd T(sm.t_pts.size());
-        Eigen::MatrixXd head(2, 3), tail(2, 3);
-        const int N = sm.t_pts.size();
-        reverse.push_back(sm.reverse);
-        int direction = sm.reverse?-1:1;
-
-        for(int j = 1; j < (int)sm.pos_pts.size() - 1; j++)
-        {
-            posP(0, j - 1) = sm.pos_pts[j].x;
-            posP(1, j - 1) = sm.pos_pts[j].y;
-        }
-        for(int j = 0; j < (int)sm.t_pts.size(); j++)
-        {
-            T(j) = sm.t_pts[j];
-        }
-        head.row(0) = Eigen::Vector3d(sm.head_x.x, sm.head_x.y, sm.head_x.z);
-        head.row(1) = Eigen::Vector3d(sm.head_y.x, sm.head_y.y, sm.head_y.z);
-        tail.row(0) = Eigen::Vector3d(sm.tail_x.x, sm.tail_x.y, sm.tail_x.z);
-        tail.row(1) = Eigen::Vector3d(sm.tail_y.x, sm.tail_y.y, sm.tail_y.z);
-
-        jerk_opter.reset(head, tail, N);
-        jerk_opter.generate(posP, T);
-        plan_utils::Trajectory traj = jerk_opter.getTraj(direction);
-
-        surround_traj.addSingulTraj(traj, start_time, drone_id);
-
-        total_time += traj.getTotalDuration();
-        // minco_traj.push_back(sur_traj);
-    }
-	newest_trajectory = surround_traj;	
 }
 
 void simCallback(const ros::TimerEvent &e)
@@ -210,7 +167,8 @@ int main (int argc, char** argv)
     ros::NodeHandle nh("~");
 
 	nh.getParam("drone_id", drone_id);
-	nh.getParam("uav_type", uav_type);
+	nh.getParam("drone_type", drone_type);
+	nh.getParam("drone_scale", drone_scale);
 	nh.getParam("init_x", init_x);
 	nh.getParam("init_y", init_y);
 	nh.getParam("init_z", init_z);
@@ -251,9 +209,9 @@ int main (int argc, char** argv)
 	marker.color.g = 0.5;
 	marker.color.b = 0.5;	
 
-	marker.scale.x = 1.0;
-	marker.scale.y = 1.0;
-	marker.scale.z = 1.0;
+	marker.scale.x = drone_scale;
+	marker.scale.y = drone_scale;
+	marker.scale.z = drone_scale;
 	q_mesh = Eigen::Quaterniond(1.0/sqrt(2), 0.0, 0.0, 1.0/sqrt(2));
 	pos_mesh = Eigen::Vector3d(-0.75, 0.35, 0.0);
 	

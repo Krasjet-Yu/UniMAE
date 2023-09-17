@@ -12,29 +12,16 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   std_msgs
   visualization_msgs
-  message_generation
 )
 find_package(Eigen3 REQUIRED)
 
 set(PLAN_UTILS_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include/plan_utils)
 # set(GEO_UITLS_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include/geo_utils2d)
 
-add_message_files(FILES
-  SingleMinco.msg
-  MincoTraj.msg
-  Trajectory.msg
-)
-
-generate_messages(DEPENDENCIES
-	std_msgs
-  geometry_msgs
-  nav_msgs
-)
-
 catkin_package(
 #  INCLUDE_DIRS include ${PLAN_UTILS_INCLUDE_DIRS} 
 #  ${GEO_UTILS_INCLUDE_DIRs}
- CATKIN_DEPENDS roscpp std_msgs message_runtime
+ CATKIN_DEPENDS roscpp std_msgs
 )
 
 include_directories( include 
