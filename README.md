@@ -2,7 +2,7 @@
 
 ---
 ## Description
-**UniMAE**: An **U**nified Framework for **M**ulti-**A**gents **E**xploration
+**UniMAE**: An **Uni**fied Framework for **M**ulti-**A**gents **E**xploration
 
 ---
 ## Configuration
