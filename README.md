@@ -61,3 +61,5 @@ git merge origin master                    # requires manual conflict resolution
 ##### Robot Model Simulator 
 - [ ] uav simulator
 - [x] ugv simulator
+- [x] laser simulator
+- [ ] camera simulator (add fov)

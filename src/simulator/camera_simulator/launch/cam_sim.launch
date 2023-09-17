@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+    <arg name="robot_id" />
+    <arg name="robot_type"/>
+    <arg name="odom_topic" />
+    <arg name="map_size_x_"/>
+    <arg name="map_size_y_"/>
+    <arg name="map_size_z_"/>
+
+    <node pkg="camera_simulator" type="cam_sim_node" name="$(arg robot_type)_$(arg robot_id)_camera_simulator" output="screen">
+        <rosparam command="load" file="$(find camera_simulator)/params/camera.yaml" />
+        <param name="sensing_horizon"  value="5.0" />
+        <param name="sensing_rate"     value="30.0"/>
+        <param name="estimation_rate"  value="30.0"/>
+
+        <param name="map/x_size"     value="$(arg map_size_x_)"/>
+        <param name="map/y_size"     value="$(arg map_size_y_)"/>
+        <param name="map/z_size"     value="$(arg map_size_z_)"/>
+        <param name="map/robot_id"   value="$(arg robot_id)"/>
+
+        <remap from="~global_map" to="/map_generator/global_cloud"/>
+        <remap from="~odometry"   to="$(arg odom_topic)"/>
+  </node>
+</launch>
