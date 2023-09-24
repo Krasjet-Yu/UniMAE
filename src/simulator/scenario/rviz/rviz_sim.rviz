@@ -5,6 +5,9 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /car01
+        - /car01/detecting1
+        - /car01/detecting1/laser_sense_cloudpoints1/Autocompute Value Bounds1
       Splitter Ratio: 0.46176469326019287
     Tree Height: 736
   - Class: rviz/Selection
@@ -17,7 +20,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: globalmap
+    SyncSource: laser_sense_cloudpoints
   - Class: rviz/Tool Properties
     Expanded:
       - /2D Nav Goal1
@@ -69,7 +72,7 @@ Visualization Manager:
       Color: 0; 0; 0
       Color Transformer: FlatColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -80,11 +83,11 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.20000000298023224
       Style: Boxes
-      Topic: /global_map
+      Topic: /map_generator/global_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Class: rviz/Group
       Displays:
         - Class: rviz/Group
@@ -272,7 +275,7 @@ Visualization Manager:
               Color: 114; 159; 207
               Color Transformer: FlatColor
               Decay Time: 0
-              Enabled: true
+              Enabled: false
               Invert Rainbow: false
               Max Color: 255; 255; 255
               Min Color: 0; 0; 0
@@ -287,7 +290,7 @@ Visualization Manager:
               Unreliable: false
               Use Fixed Frame: true
               Use rainbow: true
-              Value: true
+              Value: false
             - Class: rviz/MarkerArray
               Enabled: true
               Marker Topic: /car_0_laser_simulator/car_0_laser_range
@@ -295,6 +298,34 @@ Visualization Manager:
               Namespaces:
                 "": true
               Queue Size: 100
+              Value: true
+            - Alpha: 1
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 1.273364782333374
+                Min Value: 0.0768672302365303
+                Value: true
+              Axis: Z
+              Channel Name: intensity
+              Class: rviz/PointCloud2
+              Color: 255; 255; 255
+              Color Transformer: AxisColor
+              Decay Time: 0
+              Enabled: true
+              Invert Rainbow: false
+              Max Color: 255; 255; 255
+              Min Color: 0; 0; 0
+              Name: laser_sense_cloudpoints
+              Position Transformer: XYZ
+              Queue Size: 10
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.10000000149011612
+              Style: Flat Squares
+              Topic: /car_0_laser_simulator/car_0_sense_pointcloud
+              Unreliable: false
+              Use Fixed Frame: true
+              Use rainbow: true
               Value: true
           Enabled: true
           Name: detecting
@@ -1154,34 +1185,6 @@ Visualization Manager:
       Transport Hint: raw
       Unreliable: false
       Value: false
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 4.400000095367432
-        Min Value: 0
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud2
-      Color: 114; 159; 207
-      Color Transformer: AxisColor
-      Decay Time: 0
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Min Color: 0; 0; 0
-      Name: globalmap
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.10000000149011612
-      Style: Flat Squares
-      Topic: /map_generator/global_cloud
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: true
   Enabled: true
   Global Options:
     Background Color: 255; 255; 255
@@ -1210,7 +1213,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 10.024969100952148
+      Distance: 10.346375465393066
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1218,17 +1221,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -11.22577953338623
-        Y: -0.07763347029685974
-        Z: 1.5308303833007812
+        X: 0.8167295455932617
+        Y: 0.49275660514831543
+        Z: 1.5308313369750977
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.39479702711105347
+      Pitch: 0.49479708075523376
       Target Frame: world
-      Yaw: 3.04897403717041
+      Yaw: 2.803964614868164
     Saved: ~
 Window Geometry:
   Displays:

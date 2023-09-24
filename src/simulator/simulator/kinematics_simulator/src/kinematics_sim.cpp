@@ -5,20 +5,26 @@
 #include <ros/ros.h>
 #include <vector>
 #include <nav_msgs/Odometry.h>
+#include "sensor_msgs/Range.h"
+#include <tf2_ros/static_transform_broadcaster.h>
+#include <tf2_ros/transform_broadcaster.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 #include "plan_utils/traj_container.hpp"
+#include "pose_utils.h"
 
 #define OMINIDIRECTION 0
 #define DIFFERENTIAL   1
 #define ACKERMANN 	   2
 
+using namespace arma;
 using namespace std;
 
 // ros interface
 ros::Subscriber traj_sub;
 ros::Publisher  odom_pub;
 ros::Publisher  mesh_pub;
+ros::Publisher  sensor_pub;
 ros::Timer simulate_timer;
 visualization_msgs::Marker marker;
 
@@ -26,6 +32,10 @@ visualization_msgs::Marker marker;
 plan_utils::TrajContainer newest_trajectory;
 std::default_random_engine generator;
 std::normal_distribution<double> distribution{0.0,1.0};
+
+// visualization
+sensor_msgs::Range heightROS;
+visualization_msgs::Marker sensorROS;
 
 double x = 0.0;
 double y = 0.0;
@@ -88,7 +98,8 @@ void simCallback(const ros::TimerEvent &e)
 	nav_msgs::Odometry new_odom;
 
 	double time_now = ros::Time::now().toSec();
-	new_odom.header.stamp    = ros::Time::now();
+	ros::Time ros_time_now = ros::Time::now();
+	new_odom.header.stamp    = ros_time_now;
 	new_odom.header.frame_id = "world";
 
 	if(rcv_traj)
@@ -130,7 +141,7 @@ void simCallback(const ros::TimerEvent &e)
 	new_odom.pose.pose.orientation.w  = cos(yaw/2.0);
 	new_odom.pose.pose.orientation.x  = 0;
 	new_odom.pose.pose.orientation.y  = 0;
-	new_odom.pose.pose.orientation.z  = sin(yaw/2.0);;
+	new_odom.pose.pose.orientation.z  = sin(yaw/2.0);
 	new_odom.twist.twist.linear.x  = vx;
 	new_odom.twist.twist.linear.y  = vy;
 	new_odom.twist.twist.linear.z  = 0;
@@ -139,7 +150,6 @@ void simCallback(const ros::TimerEvent &e)
 	new_odom.twist.twist.angular.z = w;	
 
 	odom_pub.publish(new_odom);
-	
 
 	Eigen::Quaterniond q_shift(0.0, 0.0, -0.7071, -0.7071);
 	Eigen::Quaterniond q_odom;
@@ -158,6 +168,86 @@ void simCallback(const ros::TimerEvent &e)
 	marker.pose.position.z = pos.z();
 
 	mesh_pub.publish(marker);
+
+	// TF visualize and broadcast
+	colvec pose(6);
+	colvec q(4);
+	pose(0) = x;
+  pose(1) = y;
+  pose(2) = 0;
+	q(0) = cos(yaw/2.0);
+  q(1) = 0;
+  q(2) = 0;
+  q(3) = sin(yaw/2.0);
+	bool G = 1;
+  bool V = 1;
+  bool L = 1;
+	// Sensor availability
+  sensorROS.header.frame_id = string("world");
+  sensorROS.header.stamp = ros_time_now;
+  sensorROS.ns = string("sensor");
+  sensorROS.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+  sensorROS.action = visualization_msgs::Marker::ADD;
+  sensorROS.pose.position.x = pose(0);
+  sensorROS.pose.position.y = pose(1);
+  sensorROS.pose.position.z = pose(2) + 1.0;
+  sensorROS.pose.orientation.w = q(0);
+  sensorROS.pose.orientation.x = q(1);
+  sensorROS.pose.orientation.y = q(2);
+  sensorROS.pose.orientation.z = q(3);
+  string strG = G ? string(" GPS ") : string("");
+  string strV = V ? string(" Vision ") : string("");
+  string strL = L ? string(" Laser ") : string("");
+  sensorROS.text = "| " + strG + strV + strL + " |";
+  sensorROS.color.a = 1.0;
+  sensorROS.color.r = 1.0;
+  sensorROS.color.g = 1.0;
+  sensorROS.color.b = 1.0;
+  sensorROS.scale.z = 0.5;
+  sensor_pub.publish(sensorROS);
+
+	// TF for raw sensor visualization
+  if (1) {
+		static tf2_ros::TransformBroadcaster _br;
+		geometry_msgs::TransformStamped _transformStamped;
+
+		string base_s   = car_id == -1 ? string("base")   : string("car") + std::to_string(car_id) + string("_base");
+    string laser_s  = car_id == -1 ? string("laser")  : string("car") + std::to_string(car_id) + string("_laser");
+    string vision_s = car_id == -1 ? string("vision") : string("car") + std::to_string(car_id) + string("_vision");
+
+		_transformStamped.header.stamp = ros_time_now;
+
+		_transformStamped.header.frame_id = "world";
+		_transformStamped.child_frame_id = base_s;
+		_transformStamped.transform.translation.x = pose(0);
+		_transformStamped.transform.translation.y = pose(1);
+		_transformStamped.transform.translation.z = pose(2);
+		_transformStamped.transform.rotation.x = q(1);
+		_transformStamped.transform.rotation.y = q(2);
+		_transformStamped.transform.rotation.z = q(3);
+		_transformStamped.transform.rotation.w = q(0);
+		_br.sendTransform(_transformStamped);
+
+    colvec y45 = zeros<colvec>(3);
+    y45(0) = 45.0 * M_PI / 180;
+    colvec q45 = R_to_quaternion(ypr_to_R(y45));
+
+		_transformStamped.header.frame_id = base_s;
+		_transformStamped.child_frame_id = laser_s;
+    _transformStamped.transform.rotation.x = q45(1);
+		_transformStamped.transform.rotation.y = q45(2);
+		_transformStamped.transform.rotation.z = q45(3);
+		_transformStamped.transform.rotation.w = q45(0);
+		_br.sendTransform(_transformStamped);
+
+		_transformStamped.header.frame_id = base_s;
+		_transformStamped.child_frame_id = vision_s;
+		_transformStamped.transform.rotation.x = q45(1);
+		_transformStamped.transform.rotation.y = q45(2);
+		_transformStamped.transform.rotation.z = q45(3);
+		_transformStamped.transform.rotation.w = q45(0);
+		_br.sendTransform(_transformStamped);         
+  }
 }
 
 // main loop
@@ -184,6 +274,7 @@ int main (int argc, char** argv)
 	traj_sub = nh.subscribe("traj", 100, rcvTrajCallBack);
   odom_pub  = nh.advertise<nav_msgs::Odometry>("odom", 10);
 	mesh_pub = nh.advertise<visualization_msgs::Marker>("mesh", 100);
+	sensor_pub = nh.advertise<visualization_msgs::Marker>("sensor", 100, true);
 	
 	x = init_x;
 	y = init_y;

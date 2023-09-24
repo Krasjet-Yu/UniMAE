@@ -6,10 +6,13 @@
 
     <node pkg="laser_simulator" type="laser_sim_node" name="$(arg robot_type)_$(arg robot_id)_laser_simulator" output="screen">
         <!-- <rosparam file="$(find laser_simulator)/launch/params.yaml" command="load" /> -->
+        <param name="robot_type" value="$(arg robot_type)"/>
         <param name="robot_id" value="$(arg robot_id)" />
         <param name="map_topic" value="/map_generator/global_cloud"/>
         <param name="odom_topic" value="$(arg odom_topic)"/>
+        <param name="laser_odom_topic" value="$(arg robot_type)_$(arg robot_id)_laser_odom"/>
         <param name="laser_pcd_topic" value="$(arg robot_type)_$(arg robot_id)_local_pointcloud"/>
+        <param name="laser_sense_pcd_topic" value="$(arg robot_type)_$(arg robot_id)_sense_pointcloud"/>
         <param name="laser_range_topic" value="$(arg robot_type)_$(arg robot_id)_laser_range" />
         <param name="sensing_horizon" value="5"/>
         <param name="sensing_rate" value="20"/>
