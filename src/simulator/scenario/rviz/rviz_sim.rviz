@@ -5,9 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /car01
-        - /car01/detecting1
         - /car01/detecting1/laser_sense_cloudpoints1/Autocompute Value Bounds1
+        - /drone01/detecting1
       Splitter Ratio: 0.46176469326019287
     Tree Height: 736
   - Class: rviz/Selection
@@ -72,7 +71,7 @@ Visualization Manager:
       Color: 0; 0; 0
       Color Transformer: FlatColor
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -87,7 +86,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Class: rviz/Group
       Displays:
         - Class: rviz/Group
@@ -770,7 +769,7 @@ Visualization Manager:
               Color Transformer: ""
               Color Transport Hint: raw
               Decay Time: 0
-              Depth Map Topic: /drone_0_camera_simulator/depth
+              Depth Map Topic: /drone_0_camera_simulator/drone_0_cam_depth
               Depth Map Transport Hint: raw
               Enabled: false
               Invert Rainbow: false
@@ -791,7 +790,7 @@ Visualization Manager:
               Value: false
             - Class: rviz/Image
               Enabled: true
-              Image Topic: /drone_0_camera_simulator/depth
+              Image Topic: /drone_0_camera_simulator/drone_0_cam_depth
               Max Value: 1
               Median window: 5
               Min Value: 0
@@ -801,6 +800,14 @@ Visualization Manager:
               Transport Hint: raw
               Unreliable: false
               Value: true
+            - Class: rviz/MarkerArray
+              Enabled: false
+              Marker Topic: /drone_0_camera_simulator/drone_0_cam_fov
+              Name: cam_fov
+              Namespaces:
+                {}
+              Queue Size: 100
+              Value: false
           Enabled: true
           Name: detecting
         - Class: rviz/Group
@@ -1213,7 +1220,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 10.346375465393066
+      Distance: 20.144067764282227
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1229,9 +1236,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.49479708075523376
+      Pitch: 0.05479690432548523
       Target Frame: world
-      Yaw: 2.803964614868164
+      Yaw: 3.3189711570739746
     Saved: ~
 Window Geometry:
   Displays:

@@ -52,6 +52,14 @@ git merge origin master                    # requires manual conflict resolution
 ```
 
 ---
+## Issue
+pose_utils not found. Compile pose_utils separately first.
+```shell
+catkin_make -DCATKIN_WHITELIST_PACKAGES="pose_utils"
+catkin_make -DCATKIN_WHITELIST_PACKAGES=""   # cancel separated compile.
+```
+
+---
 ## TODO List
 ### Simulator
 ##### Map Generator

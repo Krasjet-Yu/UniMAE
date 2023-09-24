@@ -90,7 +90,7 @@ double guassRandom(double std)
 
 void rcvTrajCallBack(const nav_msgs::Odometry traj_msg)
 {
-    
+    rcv_traj = true;
 }
 
 void simCallback(const ros::TimerEvent &e)
@@ -231,6 +231,8 @@ void simCallback(const ros::TimerEvent &e)
     colvec y45 = zeros<colvec>(3);
     y45(0) = 45.0 * M_PI / 180;
     colvec q45 = R_to_quaternion(ypr_to_R(y45));
+		// 0.92388 0 0 0.382683
+		// std::cout << q45(0) << " " << q45(1) << " " << q45(2) << " " << q45(3) << std::endl;
 
 		_transformStamped.header.frame_id = base_s;
 		_transformStamped.child_frame_id = laser_s;
@@ -306,10 +308,9 @@ int main (int argc, char** argv)
 	q_mesh = Eigen::Quaterniond(1.0/sqrt(2), 0.0, 0.0, 1.0/sqrt(2));
 	pos_mesh = Eigen::Vector3d(-0.75, 0.35, 0.0);
 	
-
-    simulate_timer = nh.createTimer(ros::Duration(time_resolution), simCallback);
+  simulate_timer = nh.createTimer(ros::Duration(time_resolution), simCallback);
 
 	ros::spin();
 
-    return 0;
+  return 0;
 }

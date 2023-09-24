@@ -12,8 +12,13 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   std_msgs
   visualization_msgs
+  tf
+  pose_utils
+  message_generation
 )
 find_package(Eigen3 REQUIRED)
+find_package(Armadillo REQUIRED)
+include_directories(${ARMADILLO_INCLUDE_DIRS})
 
 set(PLAN_UTILS_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include/plan_utils)
 # set(GEO_UITLS_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include/geo_utils2d)
@@ -33,4 +38,6 @@ include_directories( include
 
 add_executable (quadrotor_simulator_node src/quadrotor_sim.cpp )
 target_link_libraries(quadrotor_simulator_node
-  ${catkin_LIBRARIES})
+  ${catkin_LIBRARIES}
+  ${ARMADILLO_LIBRARIES}
+  pose_utils)

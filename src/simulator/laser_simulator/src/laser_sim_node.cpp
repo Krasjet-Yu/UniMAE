@@ -195,7 +195,7 @@ void addSlice(visualization_msgs::Marker &line_msg, double angle)
   line_msg.points.push_back(p_msg);
 }
 
-void visRange()
+void laser_visual()
 {
   // visualize sensor range
   visualization_msgs::Marker clear_previous_msg;
@@ -300,7 +300,7 @@ void rcvOdometryCallbck(const nav_msgs::Odometry::ConstPtr &odom)
 
   _laser_odom_publisher.publish(_laser_odom);
   // visualize sensor range
-  visRange();
+  laser_visual();
 }
 
 void rcvGlobalPointCloudCallBack(const sensor_msgs::PointCloud2 &pointcloud_map)

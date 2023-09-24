@@ -9,6 +9,14 @@
 
     <node pkg="camera_simulator" type="cam_sim_node" name="$(arg robot_type)_$(arg robot_id)_camera_simulator" output="screen">
         <rosparam command="load" file="$(find camera_simulator)/params/camera.yaml" />
+        <param name="robot_type" value="$(arg robot_type)"/>
+        <param name="robot_id" value="$(arg robot_id)" />
+        <param name="map_topic" value="/map_generator/global_cloud"/>
+        <param name="odom_topic" value="$(arg odom_topic)"/>
+        <param name="cam_pose_topic" value="$(arg robot_type)_$(arg robot_id)_cam_pose"/>
+        <param name="cam_depth_topic" value="$(arg robot_type)_$(arg robot_id)_cam_depth"/>
+        <param name="cam_fov_topic" value="$(arg robot_type)_$(arg robot_id)_cam_fov"/>
+
         <param name="sensing_horizon"  value="5.0" />
         <param name="sensing_rate"     value="30.0"/>
         <param name="estimation_rate"  value="30.0"/>
@@ -17,8 +25,5 @@
         <param name="map/y_size"     value="$(arg map_size_y_)"/>
         <param name="map/z_size"     value="$(arg map_size_z_)"/>
         <param name="map/robot_id"   value="$(arg robot_id)"/>
-
-        <remap from="~global_map" to="/map_generator/global_cloud"/>
-        <remap from="~odometry"   to="$(arg odom_topic)"/>
   </node>
 </launch>
