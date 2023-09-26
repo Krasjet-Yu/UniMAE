@@ -37,6 +37,12 @@ Extract Local Sensing Map (camera and ``lidar``) for Planning Module
 waiting ... 
 
 ---
+## Run
+```bash
+source devel/setup.bash && roslaunch scenarios run_simulator.launch
+```
+
+---
 ## Suggestion
 1. whenever you make changes to your code, use the git tool to create a branch of your own
 2. when the master branch is updated, switch to the master branch to pull the latest code  
