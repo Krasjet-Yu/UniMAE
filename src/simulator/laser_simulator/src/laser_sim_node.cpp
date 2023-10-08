@@ -341,14 +341,14 @@ void renderSensedPoints(const ros::TimerEvent &event)
   }
 
   Eigen::Quaterniond q;
-  q.x() = _laser_odom.pose.pose.orientation.x;
-  q.y() = _laser_odom.pose.pose.orientation.y;
-  q.z() = _laser_odom.pose.pose.orientation.z;
-  q.w() = _laser_odom.pose.pose.orientation.w;
+  q.x() = _odom.pose.pose.orientation.x;
+  q.y() = _odom.pose.pose.orientation.y;
+  q.z() = _odom.pose.pose.orientation.z;
+  q.w() = _odom.pose.pose.orientation.w;
   Eigen::Vector3d xyz;
-  xyz.x() = _laser_odom.pose.pose.position.x;
-  xyz.y() = _laser_odom.pose.pose.position.y;
-  xyz.z() = _laser_odom.pose.pose.position.z;
+  xyz.x() = _odom.pose.pose.position.x;
+  xyz.y() = _odom.pose.pose.position.y;
+  xyz.z() = _odom.pose.pose.position.z;
   Eigen::Matrix3d rot(q);
   Eigen::Vector3d laser_t(xyz(0), xyz(1), xyz(2));
 
@@ -429,10 +429,11 @@ void renderSensedPoints(const ros::TimerEvent &event)
       if (_idx_map(x, y) != -1)
       {
         idx2Pt(x, y, _dis_map(x, y), p);
+        // pts in laser
         _local_map.points.emplace_back(p[0], p[1], p[2]);
-        // TODO: convert pts in world to pts in laser
+        // TODO: convert pts in laser to pts in world
         Eigen::Vector4d p_in_laser(p[0], p[1], p[2], 1.0);
-        p_in_laser = Eigen::Matrix4d::Identity() * p_in_laser;
+        p_in_laser = laser2body * p_in_laser;
         // std::cout << p_in_laser[0] << ", " << p_in_laser[1] << ", " << p_in_laser[2] << std::endl;
         _sense_map.points.emplace_back(p_in_laser[0], p_in_laser[1], p_in_laser[2]);
       }
@@ -493,10 +494,10 @@ int main(int argc, char **argv)
   _idx_map = Eigen::MatrixXi::Constant(_hrz_laser_line_num, _vtc_laser_line_num, -1);
   _dis_map = Eigen::MatrixXd::Constant(_hrz_laser_line_num, _vtc_laser_line_num, 9999.0);
   // assuming that body coordinate is rotated 90° to laser coordinate
-  laser2body << 0.0, -1.0, 0.0, 0.0,
-                -1.0, 0.0, 0.0, 0.0,
-                0.0,  0.0, 1.0, 0.0,
-                0.0,  0.0, 0.0, 1.0;
+  laser2body << cos(M_PI/4.0), sin(M_PI/4.0), 0.0, 0.0,
+                -sin(M_PI/4.0), cos(M_PI/4.0),  0.0, 0.0,
+                0.0,       0.0,        1.0, 0.0,
+                0.0,       0.0,        0.0, 1.0;
 
   std::string map_topic, odom_topic, laser_range_topic, laser_odom_topic;
   std::string laser_pcd_topic, laser_sense_pcd_topic;
