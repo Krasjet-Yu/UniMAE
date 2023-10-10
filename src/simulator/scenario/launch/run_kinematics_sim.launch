@@ -1,0 +1,58 @@
+<launch>
+  <arg name="car_id"/>
+  <arg name="cars_num" />
+
+  <arg name="init_x"/>
+  <arg name="init_y"/>
+  <arg name="init_yaw"/>
+
+  <arg name="map_size_x"/>
+  <arg name="map_size_y"/>
+  <arg name="map_size_z"/>
+
+  <arg name="origin_x"/>
+  <arg name="origin_y"/>
+  <arg name="origin_z"/>
+
+  <arg name="lidar_height"/>
+
+  <arg name="odom_topic"/>
+  <arg name="lidar_topic"/>
+  <arg name="map_pub_topic"/>
+
+  <include file="$(find kinematics_simulator)/launch/run_simulator.launch">
+    <arg name="car_id" value="$(arg car_id)" />
+    <arg name="car_scale" value="0.5"/>
+    <arg name="odom_topic" value="$(arg odom_topic)" />
+    <!-- <arg name="cmd_topic" value="/car_$(arg car_id)/command" /> -->
+    <arg name="traj_topic" value="/car_$(arg car_id)/trajectory" />
+    <arg name="mesh_topic" value="/car_$(arg car_id)/mesh" />
+
+    <arg name="init_x" value="$(arg init_x)"/>
+    <arg name="init_y" value="$(arg init_y)"/>
+    <arg name="init_yaw" value="$(arg init_yaw)"/>
+  </include>
+
+  <include file="$(find scenario)/launch/run_planner.launch">
+
+    <arg name="cars_num" value="$(arg cars_num)"/>
+    <arg name="car_id" value="$(arg car_id)"/>
+
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+
+    <arg name="origin_x" value="$(arg origin_x)"/>
+    <arg name="origin_y" value="$(arg origin_y)"/>
+    <arg name="origin_z" value="$(arg origin_z)"/>
+
+    <arg name="odometry_topic" value="$(arg odom_topic)"/>
+    <arg name="lidar_topic" value="$(arg lidar_topic)"/>
+    <arg name="map_pub_topic" value="$(arg map_pub_topic)"/>
+
+    <arg name="lidar_height" value="$(arg lidar_height)"/>
+
+    <!-- <arg name="planning_horizon" value="7.5" />  -->
+  </include>
+
+</launch>

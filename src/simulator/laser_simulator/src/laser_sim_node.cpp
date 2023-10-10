@@ -282,7 +282,7 @@ void rcvOdometryCallbck(const nav_msgs::Odometry::ConstPtr &odom)
   Pose_receive(2, 3) = request_position(2);
 
   Eigen::Matrix4d world2body = Pose_receive;
-  //convert to laser pose
+  //convert to laser pose, laser in world
   w_laser_pose = laser2body.transpose() * world2body;
   w_laser_trans = Eigen::Vector3d(w_laser_pose(0, 3), w_laser_pose(1, 3), w_laser_pose(2, 3));
   w_laser_ori = w_laser_pose.block<3, 3>(0, 0);
@@ -341,14 +341,14 @@ void renderSensedPoints(const ros::TimerEvent &event)
   }
 
   Eigen::Quaterniond q;
-  q.x() = _odom.pose.pose.orientation.x;
-  q.y() = _odom.pose.pose.orientation.y;
-  q.z() = _odom.pose.pose.orientation.z;
-  q.w() = _odom.pose.pose.orientation.w;
+  q.x() = _laser_odom.pose.pose.orientation.x;
+  q.y() = _laser_odom.pose.pose.orientation.y;
+  q.z() = _laser_odom.pose.pose.orientation.z;
+  q.w() = _laser_odom.pose.pose.orientation.w;
   Eigen::Vector3d xyz;
-  xyz.x() = _odom.pose.pose.position.x;
-  xyz.y() = _odom.pose.pose.position.y;
-  xyz.z() = _odom.pose.pose.position.z;
+  xyz.x() = _laser_odom.pose.pose.position.x;
+  xyz.y() = _laser_odom.pose.pose.position.y;
+  xyz.z() = _laser_odom.pose.pose.position.z;
   Eigen::Matrix3d rot(q);
   Eigen::Vector3d laser_t(xyz(0), xyz(1), xyz(2));
 
@@ -425,17 +425,17 @@ void renderSensedPoints(const ros::TimerEvent &event)
       */
 
       // use laser line pts
-      Eigen::Vector3d p;
+      Eigen::Vector3d p_in_laser;
       if (_idx_map(x, y) != -1)
       {
-        idx2Pt(x, y, _dis_map(x, y), p);
+        idx2Pt(x, y, _dis_map(x, y), p_in_laser);
         // pts in laser
-        _local_map.points.emplace_back(p[0], p[1], p[2]);
+        _local_map.points.emplace_back(p_in_laser[0], p_in_laser[1], p_in_laser[2]);
         // TODO: convert pts in laser to pts in world
-        Eigen::Vector4d p_in_laser(p[0], p[1], p[2], 1.0);
-        p_in_laser = laser2body * p_in_laser;
-        // std::cout << p_in_laser[0] << ", " << p_in_laser[1] << ", " << p_in_laser[2] << std::endl;
-        _sense_map.points.emplace_back(p_in_laser[0], p_in_laser[1], p_in_laser[2]);
+        Eigen::Vector4d p_in_world(p_in_laser[0], p_in_laser[1], p_in_laser[2], 1.0);
+        p_in_world = w_laser_pose * p_in_world;
+        // std::cout << p_in_world[0] << ", " << p_in_world[1] << ", " << p_in_world[2] << std::endl;
+        _sense_map.points.emplace_back(p_in_world[0], p_in_world[1], p_in_world[2]);
       }
     }
 
@@ -444,7 +444,7 @@ void renderSensedPoints(const ros::TimerEvent &event)
   _local_map.is_dense = true;
 
   pcl::toROSMsg(_local_map, _local_map_pcd);
-  _local_map_pcd.header.frame_id = "world";
+  _local_map_pcd.header.frame_id = robot_type+std::to_string(robot_id)+"_laser";
   _local_map_pcd.header.stamp = _odom.header.stamp;
 
   _pub_cloud_publisher.publish(_local_map_pcd);
@@ -454,7 +454,7 @@ void renderSensedPoints(const ros::TimerEvent &event)
   _sense_map.is_dense = true;
 
   pcl::toROSMsg(_sense_map, _sense_map_pcd);
-  _sense_map_pcd.header.frame_id = robot_type+std::to_string(robot_id)+"_laser";
+  _sense_map_pcd.header.frame_id = "world";
   _sense_map_pcd.header.stamp = _odom.header.stamp;
 
   _pub_sense_cloud_publisher.publish(_sense_map_pcd);
@@ -493,9 +493,9 @@ int main(int argc, char **argv)
 
   _idx_map = Eigen::MatrixXi::Constant(_hrz_laser_line_num, _vtc_laser_line_num, -1);
   _dis_map = Eigen::MatrixXd::Constant(_hrz_laser_line_num, _vtc_laser_line_num, 9999.0);
-  // assuming that body coordinate is rotated 90° to laser coordinate
+  // assuming that body coordinate is rotated 45° to laser coordinate
   laser2body << cos(M_PI/4.0), sin(M_PI/4.0), 0.0, 0.0,
-                -sin(M_PI/4.0), cos(M_PI/4.0),  0.0, 0.0,
+               -sin(M_PI/4.0), cos(M_PI/4.0), 0.0, 0.0,
                 0.0,       0.0,        1.0, 0.0,
                 0.0,       0.0,        0.0, 1.0;
 

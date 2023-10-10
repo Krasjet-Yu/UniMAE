@@ -1,0 +1,60 @@
+<launch>
+  <arg name="map_size_x" value="90"/>
+  <arg name="map_size_y" value="90"/>
+  <arg name="map_size_z" value="5"/>
+
+  <arg name="origin_x" value="-45.0"/>
+  <arg name="origin_y" value="-45.0"/>
+  <arg name="origin_z" value="0.1"/>
+
+  <arg name="lidar_height" value="0.0"/>
+  <arg name="cars_num"   value="1"/>
+
+  <include file="$(find map_generator)/launch/mockamap.launch">
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+    <arg name="resolution" value="0.1"/>
+  </include>
+
+  <!-- <node pkg="map_generator" name="map_pub" type="map_pub" output="screen" args="$(find map_generator)/resource/cjx.pcd"/>  -->
+  <!-- <node pkg="map_generator" name="map_pub" type="map_pub" output="screen" args="$(find map_generator)/resource/house_1.pcd"/> -->
+  <!-- <node pkg ="map_generator" name ="map_generator" type ="map_generator.py" output = "screen" respawn="true" >
+    <param name="map/x_size" value="$(arg map_size_x)"/>
+    <param name="map/y_size" value="$(arg map_size_y)"/>
+    <param name="map/z_size" value="$(arg map_size_z)"/>
+    <param name="map/resolution" value="0.1"/>
+
+    <param name="map/add_floor" value="false"/>
+    <param name="map/add_ceiling" value="false"/>
+
+    <param name="sensing/rate" value="1.0"/>
+  </node> -->
+
+  <include file="$(find scenario)/launch/run_kinematics_sim.launch">
+      <arg name="cars_num" value="$(arg cars_num)" />
+      <arg name="car_id" value="0"/>
+      
+      <arg name="init_x" value="0.0"/>
+      <arg name="init_y" value="0.0"/>
+      <arg name="init_yaw" value="0.0"/>
+
+      <arg name="map_size_x" value="$(arg map_size_x)"/>
+      <arg name="map_size_y" value="$(arg map_size_y)"/>
+      <arg name="map_size_z" value="$(arg map_size_z)"/>
+
+      <arg name="origin_x" value="$(arg origin_x)"/>
+      <arg name="origin_y" value="$(arg origin_y)"/>
+      <arg name="origin_z" value="$(arg origin_z)"/>
+
+      <arg name="lidar_height" value="$(arg lidar_height)"/>
+      
+      <arg name="odom_topic" value="/car_0/odometry"/>
+      <arg name="lidar_topic" value="/car_0_laser_simulator/car_0_local_pointcloud"/>
+
+      <arg name="map_pub_topic" value="/car_0/map"/>
+  </include>
+
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find scenario)/rviz/rviz_sim.rviz"/>
+
+</launch>

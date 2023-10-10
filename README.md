@@ -39,7 +39,7 @@ waiting ...
 ---
 ## Run
 ```bash
-source devel/setup.bash && roslaunch scenario run_simulator.launch
+source devel/setup.bash && roslaunch scenario run.launch
 ```
 
 ---

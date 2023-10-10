@@ -34,4 +34,10 @@
       <param name="noise_std" value="0.0"/>
   </node>
 
+  <include file="$(find camera_simulator)/launch/cam_sim.launch">
+    <arg name="robot_id"   value="$(arg drone_id)"/>
+    <arg name="robot_type" value="drone"/>
+    <arg name="odom_topic" value="/drone_$(arg drone_id)/odometry" />
+  </include>
+
 </launch>

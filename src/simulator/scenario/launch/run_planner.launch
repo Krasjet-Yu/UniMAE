@@ -1,0 +1,56 @@
+<launch>
+  <arg name="cars_num"/>
+  <arg name="car_id"/>  
+  
+  <arg name="map_size_x"/>
+  <arg name="map_size_y"/>
+  <arg name="map_size_z"/>
+
+  <arg name="origin_x"/>
+  <arg name="origin_y"/>
+  <arg name="origin_z"/>
+  
+  <arg name="odometry_topic"/>
+  <arg name="lidar_topic"/>
+  <arg name="map_pub_topic"/>
+
+  <arg name="lidar_height"/>
+
+  <!-- <arg name="planning_horizon"/> -->
+
+  <arg name="global_lidar_topic" default="/map_generator/global_cloud"/>
+  
+  <!-- main node -->
+  <node pkg="mapping" name="car_$(arg car_id)_mapping_node" type="mapping_vis" output="screen"> 
+    <!-- planning fsm -->
+    <param name="vehicle/cars_num" value="$(arg cars_num)" />
+    <param name="vehicle/car_id"  value="$(arg car_id)" />
+
+    <param name="mapping/resolution"      value="0.3" /> 
+    <param name="mapping/map_size_x"   value="$(arg map_size_x)" /> 
+    <param name="mapping/map_size_y"   value="$(arg map_size_y)" /> 
+    <param name="mapping/map_size_z"   value="$(arg map_size_z)" /> 
+    <param name="mapping/origin_x"   value="$(arg origin_x)" /> 
+    <param name="mapping/origin_y"   value="$(arg origin_y)" /> 
+    <param name="mapping/origin_z"   value="$(arg origin_z)" /> 
+
+    <param name="mapping/odometry_topic" value="$(arg odometry_topic)"/>
+    <param name="mapping/lidar_topic" value="$(arg lidar_topic)"/>
+    <param name="global_lidar_topic" value="$(arg global_lidar_topic)"/>
+    <param name="mapping/map_pub_topic" value="$(arg map_pub_topic)"/>
+
+    <param name="mapping/lidar_height" value="$(arg lidar_height)"/>
+
+		<param name="mapping/prob_hit_log" value="1.2" />
+		<param name="mapping/prob_miss_log" value="-0.3" />
+		<param name="mapping/clamp_min_log" value="-2.0" />
+		<param name="mapping/clamp_max_log" value="2.0" />
+		<param name="mapping/min_occupancy_log" value="1.39" />
+
+    <param name="mapping/min_ray_length" value="0.0"/>
+    <param name="mapping/max_ray_length" value="30.0"/>
+    <param name="mapping/frame_id"      value="world"/>
+
+  </node>
+
+</launch>

@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /car01/detecting1
         - /car01/detecting1/laser_sense_cloudpoints1/Autocompute Value Bounds1
         - /drone01/detecting1
       Splitter Ratio: 0.46176469326019287
@@ -94,64 +95,8 @@ Visualization Manager:
             - Alpha: 1
               Autocompute Intensity Bounds: true
               Autocompute Value Bounds:
-                Max Value: 2.3399999141693115
-                Min Value: 0.03999999910593033
-                Value: true
-              Axis: Z
-              Channel Name: intensity
-              Class: rviz/PointCloud2
-              Color: 52; 101; 164
-              Color Transformer: AxisColor
-              Decay Time: 0
-              Enabled: true
-              Invert Rainbow: false
-              Max Color: 255; 255; 255
-              Min Color: 0; 0; 0
-              Name: local_inflate_map
-              Position Transformer: XYZ
-              Queue Size: 10
-              Selectable: true
-              Size (Pixels): 3
-              Size (m): 0.20000000298023224
-              Style: Boxes
-              Topic: /ugv0/grid_map/occupancy_inflate
-              Unreliable: false
-              Use Fixed Frame: true
-              Use rainbow: true
-              Value: true
-            - Alpha: 1
-              Autocompute Intensity Bounds: true
-              Autocompute Value Bounds:
-                Max Value: 5
-                Min Value: -5
-                Value: false
-              Axis: Z
-              Channel Name: intensity
-              Class: rviz/PointCloud2
-              Color: 114; 159; 207
-              Color Transformer: FlatColor
-              Decay Time: 0
-              Enabled: false
-              Invert Rainbow: false
-              Max Color: 255; 255; 255
-              Min Color: 0; 0; 0
-              Name: local_sense_map
-              Position Transformer: XYZ
-              Queue Size: 10
-              Selectable: true
-              Size (Pixels): 3
-              Size (m): 0.10000000149011612
-              Style: Boxes
-              Topic: /ugv0/sense_cloud
-              Unreliable: false
-              Use Fixed Frame: true
-              Use rainbow: true
-              Value: false
-            - Alpha: 1
-              Autocompute Intensity Bounds: true
-              Autocompute Value Bounds:
-                Max Value: 3.97916316986084
-                Min Value: -0.044273462146520615
+                Max Value: 0.20000000298023224
+                Min Value: 0.20000000298023224
                 Value: true
               Axis: Z
               Channel Name: intensity
@@ -163,19 +108,19 @@ Visualization Manager:
               Invert Rainbow: false
               Max Color: 255; 255; 255
               Min Color: 0; 0; 0
-              Name: local_map
+              Name: grid_map_2d
               Position Transformer: XYZ
               Queue Size: 10
               Selectable: true
               Size (Pixels): 3
               Size (m): 0.10000000149011612
               Style: Flat Squares
-              Topic: /ugv0/local_cloud
+              Topic: /car_0_mapping_node/mapping/global_view_cloud
               Unreliable: false
               Use Fixed Frame: true
               Use rainbow: true
               Value: true
-          Enabled: false
+          Enabled: true
           Name: mapping
         - Class: rviz/Group
           Displays:
@@ -386,7 +331,7 @@ Visualization Manager:
               Buffer Length: 1
               Class: rviz/Path
               Color: 0; 0; 0
-              Enabled: true
+              Enabled: false
               Head Diameter: 0.30000001192092896
               Head Length: 0.20000000298023224
               Length: 0.30000001192092896
@@ -405,7 +350,7 @@ Visualization Manager:
               Shaft Length: 0.10000000149011612
               Topic: /ugv0/odom_visualization/path
               Unreliable: false
-              Value: true
+              Value: false
             - Alpha: 1
               Autocompute Intensity Bounds: true
               Autocompute Value Bounds:
@@ -1131,7 +1076,7 @@ Visualization Manager:
           Marker Topic: /drone_0/mesh
           Name: model
           Namespaces:
-            "": true
+            {}
           Queue Size: 100
           Value: true
       Enabled: true
@@ -1220,7 +1165,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 20.144067764282227
+      Distance: 29.05517578125
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1228,17 +1173,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.8167295455932617
-        Y: 0.49275660514831543
-        Z: 1.5308313369750977
+        X: 4.707039833068848
+        Y: 2.4760262966156006
+        Z: 1.5308308601379395
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.05479690432548523
+      Pitch: 0.019797008484601974
       Target Frame: world
-      Yaw: 3.3189711570739746
+      Yaw: 3.2339797019958496
     Saved: ~
 Window Geometry:
   Displays:

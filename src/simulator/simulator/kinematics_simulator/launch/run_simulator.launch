@@ -32,7 +32,12 @@
       <param name="wheel_base"          value="3.0"/>
       <param name="time_delay"          value="0.0"/>
       <param name="noise_std"           value="0.0"/>
-
-
   </node>
+
+  <include file="$(find laser_simulator)/launch/laser_sim.launch">
+    <arg name="robot_id"   value="$(arg car_id)"/>
+    <arg name="robot_type" value="car"/>
+    <arg name="odom_topic" value="/car_$(arg car_id)/odometry" />
+  </include>
+
 </launch>
