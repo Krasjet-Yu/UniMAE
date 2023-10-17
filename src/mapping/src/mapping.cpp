@@ -438,7 +438,8 @@ void MappingProcess::raycastProcess(const Eigen::Vector3d& t_wc, const pcl::Poin
         // if(occupancy_buffer_[idx_ctns] <= min_occupancy_log_)
         // {
             //TODO: 后验估计的递推公式
-            occupancy_buffer_[idx_ctns] = ? + ?;
+            occupancy_buffer_[idx_ctns] =  
+                    std::min(std::max(occupancy_buffer_[idx_ctns] + log_odds_update, clamp_min_log_), clamp_max_log_);
 
             if(occupancy_buffer_[idx_ctns] > min_occupancy_log_)
             {

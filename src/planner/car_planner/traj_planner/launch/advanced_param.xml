@@ -1,0 +1,38 @@
+<launch>
+  <arg name="car_id"/>
+  <arg name="max_vel"/>
+  <arg name="max_acc"/>
+  <arg name="planning_horizon"/>
+
+  <arg name="map_size_x"/>
+  <arg name="map_size_y"/>
+  <arg name="map_size_z"/>
+
+  <arg name="origin_x"/>
+  <arg name="origin_y"/>
+  <arg name="origin_z"/>
+
+  <arg name="odometry_topic"/>
+
+  <node pkg="car_planner" name="car_$(arg car_id)_planner_node" type="car_planner_node" output="screen">
+    <!-- planning fsm -->
+      <remap from="~traj"             to="/car_$(arg car_id)/trajectory"/>
+      <remap from="~deploy_waypoints" to="/force_deploy_node/swarm_wps"/>
+
+      <param name="vehicle/car_id" value="$(arg car_id)"/>
+
+    <!-- planning manager -->
+      <param name="manager/max_vel"  value="$(arg max_vel)" type="double"/>
+      <param name="manager/max_acc"  value="$(arg max_acc)" type="double"/>
+      <param name="manager/max_jerk" value="4" type="double"/>
+      <param name="manager/control_points_distance" value="0.4" type="double"/>
+      <param name="manager/feasibility_tolerance" value="0.05" type="double"/>
+      <param name="manager/planning_horizon" value="$(arg planning_horizon)" type="double"/>
+      <!-- <param name="manager/use_distinctive_trajs" value="$(arg use_distinctive_trajs)" type="bool"/> -->
+      <param name="manager/car_id" value="$(arg car_id)"/>
+
+    <!-- planning mapping -->
+      <param name="mapping/odometry_topic" value="$(arg odometry_topic)"/>
+  </node>
+
+</launch>

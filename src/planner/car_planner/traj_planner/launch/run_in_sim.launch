@@ -1,0 +1,50 @@
+<launch>
+  <arg name="car_id"/>
+  <arg name="comm_horizon"/>
+  <arg name="init_x"/>
+  <arg name="init_y"/>
+  <arg name="init_z"/>
+
+  <arg name="map_size_x"/>
+  <arg name="map_size_y"/>
+  <arg name="map_size_z"/>
+
+  <arg name="origin_x"/>
+  <arg name="origin_y"/>
+  <arg name="origin_z"/>
+
+  <arg name="odometry_topic"/>
+
+  <include file="$(find quadrotor_simulator)/launch/run_simulator.launch">
+      <arg name="car_id"    value="$(arg car_id)"/>
+      <arg name="car_scale" value="5.0"/>
+      <arg name="comm_horizon" value="$(arg comm_horizon)"/>
+
+      <arg name="init_x" value="$(arg init_x)"/>
+      <arg name="init_y" value="$(arg init_y)"/>
+      <arg name="init_z" value="$(arg init_z)"/>
+      <arg name="init_yaw" value="0.0"/>
+  </include>
+
+  <include file="$(find car_planner)/launch/advanced_param.xml">
+      <arg name="map_size_x" value="$(arg map_size_x)"/>
+      <arg name="map_size_y" value="$(arg map_size_y)"/>
+      <arg name="map_size_z" value="$(arg map_size_z)"/>
+
+      <arg name="origin_x" value="$(arg origin_x)"/>
+      <arg name="origin_y" value="$(arg origin_y)"/>
+      <arg name="origin_z" value="$(arg origin_z)"/>
+
+    <!-- planning fsm -->
+      <arg name="car_id" value="$(arg car_id)"/>
+
+    <!-- planning manager -->
+      <arg name="max_vel" value="6.0" />
+      <arg name="max_acc" value="3.0" />
+      <arg name="planning_horizon" value="7.5"/>
+
+    <!-- planning mapping -->
+      <arg name="odometry_topic" value="$(arg odometry_topic)"/>
+  </include>
+
+</launch>

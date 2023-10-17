@@ -6,23 +6,46 @@
 
 ---
 ## Configuration
-[Github](https://github.com/Krasjet-Yu/UniMAE.git)
-```
-git clone https://github.com/Krasjet-Yu/UniMAE.git
-```
+1. Install the dependence.
+   Install [ompl](https://ompl.kavrakilab.org/), which is required by **car_planner**.
+   ```
+   sudo apt-get install libompl-dev
+   ```
 
-[Gitee](https://gitee.com/Krasjet_Yu/UniMAE.git)
-```
-git clone https://gitee.com/Krasjet_Yu/UniMAE.git
-```
-compile code
-```python
-cd UniMAE
-catkin_make # or catkin build
-```
+   or install [ompl](https://ompl.kavrakilab.org/) in [site](https://ompl.kavrakilab.org/download.html) .
+   ```
+   tar zxf ompl-[version].tar.gz
+   cd ompl-ompl-*
+   ./install-ompl-ubuntu.sh.in
+   ```
+   
+   If occur error like **ompl/base/objectives/PathLengthOptimizationObjective.h : No such file or directory**:
+   ```
+   sudo apt install ros-noetic-ompl
+   sudo find / -name "*ompl*"
+   sudo ln -s /opt/ros/noetic/include/ompl-1.4/ompl /opt/ros/noetic/include/ompl
+   ```
+
+2. download code
+   [Github](https://github.com/Krasjet-Yu/UniMAE.git)
+   ```
+   git clone https://github.com/Krasjet-Yu/UniMAE.git
+   ```
+
+   [Gitee](https://gitee.com/Krasjet_Yu/UniMAE.git)
+   ```
+   git clone https://gitee.com/Krasjet_Yu/UniMAE.git
+   ```
+
+3. compile code
+   ```python
+   cd UniMAE
+   catkin_make # or catkin build
+   ```
 
 ---
-## Class 1
+## Class
+###  1. Class 1
 Build Global Point Cloud Map
 ```python
 source devel/setup.bash
@@ -32,7 +55,7 @@ roslaunch map_generator map_publisher.launch        # publish and display global
 ```
 
 ---
-## Class 2
+### 2. Class 2
 Extract Local Sensing Map (camera and ``lidar``) for Planning Module  
 waiting ... 
 
