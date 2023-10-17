@@ -51,3 +51,8 @@ add_executable (mockamap_node
 target_link_libraries(mockamap_node
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}) 
+
+add_executable (random_forest src/random_forest_sensing.cpp )
+target_link_libraries(random_forest
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES})
